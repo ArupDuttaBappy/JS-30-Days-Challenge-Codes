@@ -1,6 +1,5 @@
 html {
   font-size: 10px;
-  background: ;<--!some url-->
 }
 
 body,html {
@@ -33,4 +32,18 @@ body,html {
 kbd {
   display: block;
   font-size: 4rem;
+}
+
+.cancel_box {
+  color: white;
+  float: right;
+  margin-top: -26px;
+  font-size: 20px;
+}
+
+.cancel_box:hover,
+.cancel_box:focus {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
 }
