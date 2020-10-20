@@ -81,6 +81,14 @@ $result = $conn->query($sql);
     </div>
   </div>
 
+  <!-- <script>
+  var myVar = setInterval(myTimer, 1000);
+
+  function myTimer() {
+    var d = new Date();
+    document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+  }
+  </script> -->
 
   <script type="text/javascript">
 
