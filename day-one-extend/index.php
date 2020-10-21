@@ -13,7 +13,8 @@ $result = $conn->query($sql);
   <head>
     <meta charset="utf-8">
     <title>Open Timerr</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+    <link href="style.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -40,7 +41,7 @@ $result = $conn->query($sql);
       <kbd><?php echo $kbd_keys[$i];?></kbd>
       <span class="title"><?php echo $rows['box_title'];?></span>
       <div id="total_time"><?php echo $rows['total_time'];?></div>
-      <div style="border:.1rem solid black; display:none; margin-bottom:-15px;">STOP</div>
+      <div class="stop_timer_btn" style="">STOP</div>
 
     </div>
     <?php
@@ -117,6 +118,7 @@ $result = $conn->query($sql);
   href = pressed_key.getAttribute("href");
 
   pressed_key.style.background="red";// overwrites box-background style, but do not stored in DB
+  pressed_key.querySelector(".stop_timer_btn").style.display="block";
   //window.location.href = href;
   window.open(href, '_blank');
   //win.focus();
@@ -131,6 +133,14 @@ $result = $conn->query($sql);
   var sec = Math.floor((present_total_time % 3600) % 60);
   //document.getElementById("total_time").innerHTML = hour+" : "+min+" : "+sec;
   pressed_key.querySelector("#total_time").innerText = hour+" : "+min+" : "+sec;
+  $.ajax({
+    type : "POST",  //type of method
+    url  : "update_time_important.php",
+    data : {
+            title : pressed_key.querySelector(".title").innerText ,
+            total_time : present_total_time
+           }// passing the values
+  });
 }
 
 }
