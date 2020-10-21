@@ -123,7 +123,7 @@ $result = $conn->query($sql);
   if (!pressed_key) return;
   href = pressed_key.getAttribute("href");
 
-  pressed_key.style.background="red";// overwrites box-background style, but do not stored in DB
+  pressed_key.style.background="red";// to active red background
   pressed_key.querySelector(".stop_timer_btn").style.display="block";
   //window.location.href = href;
   window.open(href, '_blank');
@@ -147,6 +147,17 @@ $result = $conn->query($sql);
  }
 }//function follow_link ends
   window.addEventListener("keydown",follow_link);
+
+// Starts "STOP" div functionalities
+  var all_stop_div=document.querySelectorAll(".stop_timer_btn");
+  for (var i = 0; i < all_stop_div.length; i++) {
+     all_stop_div[i].addEventListener("click", function(e) {
+       this.style.display="none";
+       //this.parentNode.classList.remove('active'); // to default box background
+       this.parentNode.style.background='#999999';
+     });
+ }
+
   </script>
 
   </body>
