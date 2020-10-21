@@ -36,11 +36,12 @@ $result = $conn->query($sql);
     <div data-key="<?php echo $key_codes[$i];?>"
       href="<?php echo $rows['box_url'];?>"
       target="_blank" class="box" style="background:<?php echo $rows['box_background'];?>"><!--#ff3333-->
+      <!-- box_background is loading from DB, in-case this feature be needed in future -->
       <span class="cancel_box">&times;</span>
 
       <kbd><?php echo $kbd_keys[$i];?></kbd>
       <span class="title"><?php echo $rows['box_title'];?></span>
-      <div id="total_time"><?php echo $rows['total_time'];?></div>
+      <div id="total_time" style="display:block"><?php echo $rows['total_time'];?></div>
       <div class="stop_timer_btn" style="">STOP</div>
 
     </div>
@@ -102,11 +103,16 @@ $result = $conn->query($sql);
         type : "POST",  //type of method
         url  : "delete_website.php",  //your page
         data : {title : nextSibling_title},// passing the values
-        success: function(res){
-                 location.replace("index.php");
-                }
+        success: function(res){ location.replace("index.php"); }
     });
     });
+  }
+
+  function hour_min_sec_format(seconds){
+    var hour = Math.floor(seconds / 3600);
+    var min = Math.floor((seconds % 3600) / 60);
+    var sec = Math.floor((seconds % 3600) % 60);
+    return hour+" : "+min+" : "+sec;
   }
 
   function follow_link(e){
@@ -124,15 +130,11 @@ $result = $conn->query($sql);
   //win.focus();
 
   let present_total_time=Number(pressed_key.querySelector("#total_time").innerText);
-  setInterval(timer_func, 1000);// call timer function
+  setInterval(timer_func, 1000);// call timer function after every 1000ms
 
   function timer_func() {
   present_total_time = present_total_time + 1;
-  var hour = Math.floor(present_total_time / 3600);
-  var min = Math.floor((present_total_time % 3600) / 60);
-  var sec = Math.floor((present_total_time % 3600) % 60);
-  //document.getElementById("total_time").innerHTML = hour+" : "+min+" : "+sec;
-  pressed_key.querySelector("#total_time").innerText = hour+" : "+min+" : "+sec;
+  pressed_key.querySelector("#total_time").innerText = hour_min_sec_format(present_total_time);
   $.ajax({
     type : "POST",  //type of method
     url  : "update_time_important.php",
@@ -140,13 +142,11 @@ $result = $conn->query($sql);
             title : pressed_key.querySelector(".title").innerText ,
             total_time : present_total_time
            }// passing the values
-  });
+});
 }
-
-}
-  }
+ }
+}//function follow_link ends
   window.addEventListener("keydown",follow_link);
-
   </script>
 
   </body>
