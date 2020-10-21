@@ -34,11 +34,13 @@ $result = $conn->query($sql);
     ?>
     <div data-key="<?php echo $key_codes[$i];?>"
       href="<?php echo $rows['box_url'];?>"
-      target="_blank" class="box">
+      target="_blank" class="box" style="background:<?php echo $rows['box_background'];?>"><!--#ff3333-->
       <span class="cancel_box">&times;</span>
 
       <kbd><?php echo $kbd_keys[$i];?></kbd>
       <span class="title"><?php echo $rows['box_title'];?></span>
+      <div id="total_time"><?php echo $rows['total_time'];?></div>
+      <div style="border:.1rem solid black; display:none; margin-bottom:-15px;">STOP</div>
 
     </div>
     <?php
@@ -47,9 +49,9 @@ $result = $conn->query($sql);
     ?>
 
     <!--  add new box -->
-    <div class="box" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+    <div class="box" data-toggle="modal"data-target="#myModal">
         <kbd><i class="fas fa-plus"></i></kbd>
-        <span class="title">ADD</span>
+        <span class="">ADD</span>
     </div>
   </div>
 
@@ -81,26 +83,18 @@ $result = $conn->query($sql);
     </div>
   </div>
 
-  <!-- <script>
-  var myVar = setInterval(myTimer, 1000);
-
-  function myTimer() {
-    var d = new Date();
-    document.getElementById("demo").innerHTML = d.toLocaleTimeString();
-  }
-  </script> -->
 
   <script type="text/javascript">
+
+  window.onbeforeunload = function() {
+    return "Data will be lost if you leave the page, are you sure?";
+  };
 
   var closeIcons = document.querySelectorAll('.cancel_box');
   for (var i = 0; i < closeIcons.length; i++) {
     closeIcons[i].addEventListener("click", function(e){
       let nextSibling_title = this.nextElementSibling.nextElementSibling.innerHTML;
       var confirmation_result=confirm("Remove the site \""+nextSibling_title+"\" ?");
-      //
-      // $sql_delete = "DELETE FROM `box_list` WHERE `box_title`=`nextSibling_title`";
-      // $conn->query($sql_delete);
-      //
       if(confirmation_result==true){}
       else return;
       $.ajax({
@@ -115,14 +109,30 @@ $result = $conn->query($sql);
   }
 
   function follow_link(e){
-  //if(!(e.target.getAttribute('type') == "text"  ||   e.target.getAttribute('type') == "url")){
+
   if(!e.target.classList.contains("do_not_follow_link")){
-  const pressed_key = document.querySelector(`.box[data-key="${e.keyCode}"]`);
+  let pressed_key = document.querySelector(`.box[data-key="${e.keyCode}"]`);
+  //const pressed_key_url=document.querySelector(`.box[href="${e.keyCode}"]`);
   if (!pressed_key) return;
   href = pressed_key.getAttribute("href");
+
+  pressed_key.style.background="red";// overwrites box-background style, but do not stored in DB
   //window.location.href = href;
   window.open(href, '_blank');
   //win.focus();
+
+  let present_total_time=Number(pressed_key.querySelector("#total_time").innerText);
+  setInterval(timer_func, 1000);// call timer function
+
+  function timer_func() {
+  present_total_time = present_total_time + 1;
+  var hour = Math.floor(present_total_time / 3600);
+  var min = Math.floor((present_total_time % 3600) / 60);
+  var sec = Math.floor((present_total_time % 3600) % 60);
+  //document.getElementById("total_time").innerHTML = hour+" : "+min+" : "+sec;
+  pressed_key.querySelector("#total_time").innerText = hour+" : "+min+" : "+sec;
+}
+
 }
   }
   window.addEventListener("keydown",follow_link);
