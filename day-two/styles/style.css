@@ -1,7 +1,5 @@
 html {
-  background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
-  background-size: cover;
-  font-family: 'helvetica neue';
+  background: black;
   text-align: center;
   font-size: 10px;
 }
@@ -40,7 +38,7 @@ body {
 .hand {
   width: 50%;
   height: 6px;
-  background: black;
+  background: white;
   position: absolute;
   top: 50%;
 }
