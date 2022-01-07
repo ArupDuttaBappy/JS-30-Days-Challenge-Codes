@@ -1,3 +1,3 @@
 # JS-30-Days-Challenge-Codes
 Developing my knowledge on Javascript with #javascript30 challenge.<br>
-'extended' tags indicate ideas based on daily assignments.
+'extend' tags indicate extended ideas based on daily assignments.
